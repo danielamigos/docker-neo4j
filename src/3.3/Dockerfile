@@ -33,5 +33,6 @@ EXPOSE 7474 7473 7687
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 RUN chown -R neo4juser:neo4juser /var/lib/neo4j
+RUN chown -R neo4juser:neo4juser /home
 USER neo4juser
 CMD ["neo4j"]
