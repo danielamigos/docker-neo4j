@@ -3,11 +3,6 @@ RUN apk add --no-cache --quiet \
     bash \
     curl
 
-RUN addgroup -S neo4juser && adduser -S -G neo4juser neo4juser
-RUN chown -R neo4juser:neo4juser /var/lib/neo4j
-RUN chown -R neo4juser:neo4juser /home
-USER neo4juser
-
 ENV NEO4J_SHA256=%%NEO4J_SHA%% \
     NEO4J_TARBALL=%%NEO4J_TARBALL%% \
     NEO4J_EDITION=%%NEO4J_EDITION%%
@@ -25,6 +20,15 @@ RUN curl --fail --silent --show-error --location --remote-name ${NEO4J_URI} \
     && apk del curl
 
 ENV PATH /var/lib/neo4j/bin:$PATH
+
+# RUN rm /var/lib/neo4j/data/databases/graph.db/store_lock
+
+RUN addgroup -S neo4juser && adduser -S -G neo4juser neo4juser
+RUN chown -R neo4juser:neo4juser /var/lib
+RUN chown -R neo4juser:neo4juser /home
+RUN chown -R neo4juser:neo4juser /data
+RUN chown neo4juser:neo4juser ./
+USER neo4juser
 
 WORKDIR /var/lib/neo4j
 
