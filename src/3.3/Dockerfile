@@ -4,6 +4,9 @@ RUN apk add --no-cache --quiet \
     curl
 
 RUN addgroup -S neo4juser && adduser -S -G neo4juser neo4juser
+RUN chown -R neo4juser:neo4juser /var/lib/neo4j
+RUN chown -R neo4juser:neo4juser /home
+USER neo4juser
 
 ENV NEO4J_SHA256=%%NEO4J_SHA%% \
     NEO4J_TARBALL=%%NEO4J_TARBALL%% \
@@ -32,7 +35,4 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 EXPOSE 7474 7473 7687
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
-RUN chown -R neo4juser:neo4juser /var/lib/neo4j
-RUN chown -R neo4juser:neo4juser /home
-USER neo4juser
 CMD ["neo4j"]
